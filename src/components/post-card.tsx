@@ -1,7 +1,7 @@
 import { Post } from '@/types/post';
-import { Link } from 'next-view-transitions';
 import Image from 'next/image';
 import React from 'react';
+import Link from 'next/link';
 
 interface PostCardProps {
   post: Post;
