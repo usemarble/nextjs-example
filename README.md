@@ -150,7 +150,7 @@ After deployment, update your Marble webhook URL to point to your Vercel deploym
 
 This template works with any hosting platform that supports Next.js:
 
-- **Netlify** - Use the [Next.js plugin](https://docs.netlify.com/build/frameworks/framework-setup-guides/nextjs/overview/) for seamless deployment
+- **Netlify** - Follow the [Next.js guide](https://docs.netlify.com/build/frameworks/framework-setup-guides/nextjs/overview/) for seamless deployment
 - **Cloudflare** - Deploy with [Cloudflare Pages](https://developers.cloudflare.com/pages/framework-guides/nextjs/) support for Next.js
 
 ## Learn More
