@@ -23,8 +23,6 @@ export function verifySignature(
   return timingSafeEqual(expected, computed);
 }
 
-
-
 import { revalidatePath, revalidateTag } from "next/cache";
 import type { PostEventData } from "@/types/webhook";
 
@@ -42,7 +40,7 @@ export async function handleWebhookEvent(payload: PostEventData) {
 
     // If your data fetches use tags, revalidate that tag as well:
     // e.g. fetch(..., { next: { tags: ["posts"] } })
-    revalidateTag("posts");
+    revalidateTag("posts", { expire: 0 });
 
     return {
       revalidated: true,
