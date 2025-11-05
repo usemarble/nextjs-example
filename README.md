@@ -62,7 +62,7 @@ Open [http://localhost:3000](http://localhost:3000) to see your site.
 
 ## Project Structure
 
-```
+```text
 src/
 ├── app/
 │   ├── (site)/              # Main site pages
@@ -129,6 +129,7 @@ To enable automatic cache revalidation when content updates:
 4. Copy the webhook secret and add it to your `.env.local` as `MARBLE_WEBHOOK_SECRET`
 
 The webhook handler will automatically revalidate:
+
 - The homepage (`/`)
 - Individual post pages (`/post/[slug]`)
 - The `posts` cache tag
@@ -145,23 +146,12 @@ The webhook handler will automatically revalidate:
 
 After deployment, update your Marble webhook URL to point to your Vercel deployment.
 
-### Manual Deployment
+### Other Platforms
 
-Build the production bundle:
+This template works with any hosting platform that supports Next.js:
 
-```bash
-pnpm build
-# or
-npm run build
-```
-
-Start the production server:
-
-```bash
-pnpm start
-# or
-npm start
-```
+- **Netlify** - Use the [Next.js plugin](https://docs.netlify.com/build/frameworks/framework-setup-guides/nextjs/overview/) for seamless deployment
+- **Cloudflare** - Deploy with [Cloudflare Pages](https://developers.cloudflare.com/pages/framework-guides/nextjs/) support for Next.js
 
 ## Learn More
 
