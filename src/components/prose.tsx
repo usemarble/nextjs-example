@@ -11,7 +11,7 @@ function Prose({ children, html, className }: ProseProps) {
   return (
     <article
       className={cn(
-        "prose prose-h1:font-bold prose-h1:text-xl prose-a:text-blue-600 prose-p:text-justify prose-img:rounded-xl prose-headings:font-serif prose-headings:font-normal mx-auto",
+        "prose prose-h1:font-bold prose-h1:text-xl prose-a:text-blue-600 prose-p:text-justify prose-headings:font-serif prose-headings:font-normal mx-auto prose-figcaption:text-center",
         className,
       )}
     >
