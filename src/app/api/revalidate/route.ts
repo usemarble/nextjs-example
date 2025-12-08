@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
+import { handleWebhookEvent, verifySignature } from "@/lib/marble/webhook";
 import type { PostEventData } from "@/types/webhook";
-import { verifySignature, handleWebhookEvent } from "@/lib/marble/webhook";
 
 export async function POST(request: Request) {
   const signature = request.headers.get("x-marble-signature");
@@ -9,7 +9,7 @@ export async function POST(request: Request) {
   if (!secret || !signature) {
     return NextResponse.json(
       { error: "Secret or signature missing" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
   if (!payload.event || !payload.data) {
     return Response.json(
       { error: "Invalid payload structure" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
     console.error("error", err);
     return NextResponse.json(
       { error: "Failed to process webhook" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

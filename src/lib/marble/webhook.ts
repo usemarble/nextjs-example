@@ -4,7 +4,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 export function verifySignature(
   secret: string,
   signatureHeader: string,
-  bodyText: string
+  bodyText: string,
 ) {
   // Strip possible "sha256=" prefix
   const expectedHex = signatureHeader.replace(/^sha256=/, "");

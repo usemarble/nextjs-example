@@ -1,8 +1,8 @@
 import "@/styles/globals.css";
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Geist_Mono, Literata, Manrope } from "next/font/google";
 import { SITE } from "@/lib/site";
-import { Analytics } from "@vercel/analytics/next";
 
 const manrope = Manrope({
   variable: "--font-sans",

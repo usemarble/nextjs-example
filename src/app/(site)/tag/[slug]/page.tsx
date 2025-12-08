@@ -1,8 +1,8 @@
+import { Fragment } from "react";
 import Container from "@/components/container";
 import PostCard from "@/components/post-card";
 import { getTags } from "@/lib/marble/queries";
-import { MarblePostList } from "@/types/post";
-import { Fragment } from "react";
+import type { MarblePostList } from "@/types/post";
 
 type PageProps = {
   params: Promise<{ slug: string }>;

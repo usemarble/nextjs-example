@@ -12,7 +12,6 @@ const key = process.env.MARBLE_WORKSPACE_KEY;
 export async function getPosts() {
   try {
     const raw = await fetch(`${url}/${key}/posts`, {
-      cache: "force-cache",
       next: {
         tags: ["posts"],
       },

@@ -34,7 +34,7 @@
       }
     }
   },
-   "css": {
+  "css": {
     "parser": {
       "tailwindDirectives": true
     }

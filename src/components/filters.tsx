@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Input } from './ui/input';
+import { useState } from "react";
+import { Input } from "./ui/input";
 
 function Filters() {
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   // const handleSearch = () => {
   //   console.log('....');
   // };
 
   return (
-    <div className='flex justify-between'>
+    <div className="flex justify-between">
       <Input
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
