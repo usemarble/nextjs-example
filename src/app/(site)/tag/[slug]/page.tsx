@@ -13,7 +13,17 @@ const getPostsTagged = async (slug: string) => {
   const url = process.env.MARBLE_API_URL;
   const key = process.env.MARBLE_WORKSPACE_KEY;
 
-  const response = await fetch(`${url}/${key}/posts?tags=${slug}`);
+  if (!url || !key) {
+    throw new Error(
+      "Missing MARBLE_API_URL or MARBLE_WORKSPACE_KEY in environment variables",
+    );
+  }
+
+  const response = await fetch(`${url}/posts?tags=${slug}`, {
+    headers: {
+      Authorization: `Bearer ${key}`,
+    },
+  });
   const data: MarblePostList = await response.json();
 
   return data;
@@ -37,7 +47,7 @@ async function Page({ params }: PageProps) {
   return (
     <section>
       <Container className="py-10">
-        <ul className="grid justify-center gap-20 grid-cols-[repeat(auto-fill,minmax(0,_400px))] w-full">
+        <ul className="grid justify-center gap-20 grid-cols-[repeat(auto-fill,minmax(0,400px))] w-full">
           {data.posts.map((post) => (
             <Fragment key={post.id}>
               <PostCard post={post} showTags={false} />

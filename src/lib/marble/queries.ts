@@ -9,9 +9,18 @@ import type {
 const url = process.env.MARBLE_API_URL;
 const key = process.env.MARBLE_WORKSPACE_KEY;
 
+if (!url || !key) {
+  throw new Error(
+    "Missing MARBLE_API_URL or MARBLE_WORKSPACE_KEY in environment variables"
+  );
+}
+
 export async function getPosts() {
   try {
-    const raw = await fetch(`${url}/${key}/posts`, {
+    const raw = await fetch(`${url}/posts`, {
+      headers: {
+        Authorization: `Bearer ${key}`,
+      },
       next: {
         tags: ["posts"],
       },
@@ -25,7 +34,10 @@ export async function getPosts() {
 
 export async function getTags() {
   try {
-    const raw = await fetch(`${url}/${key}/tags`, {
+    const raw = await fetch(`${url}/tags`, {
+      headers: {
+        Authorization: `Bearer ${key}`,
+      },
       cache: "force-cache",
       next: {
         tags: ["tags"],
@@ -40,7 +52,10 @@ export async function getTags() {
 
 export async function getSinglePost(slug: string) {
   try {
-    const raw = await fetch(`${url}/${key}/posts/${slug}`, {
+    const raw = await fetch(`${url}/posts/${slug}`, {
+      headers: {
+        Authorization: `Bearer ${key}`,
+      },
       cache: "force-cache",
       next: {
         tags: ["posts", slug],
@@ -55,7 +70,10 @@ export async function getSinglePost(slug: string) {
 
 export async function getCategories() {
   try {
-    const raw = await fetch(`${url}/${key}/categories`, {
+    const raw = await fetch(`${url}/categories`, {
+      headers: {
+        Authorization: `Bearer ${key}`,
+      },
       cache: "force-cache",
       next: {
         tags: ["categories"],
@@ -70,7 +88,10 @@ export async function getCategories() {
 
 export async function getAuthors() {
   try {
-    const raw = await fetch(`${url}/${key}/authors`, {
+    const raw = await fetch(`${url}/authors`, {
+      headers: {
+        Authorization: `Bearer ${key}`,
+      },
       cache: "force-cache",
       next: {
         tags: ["authors"],
