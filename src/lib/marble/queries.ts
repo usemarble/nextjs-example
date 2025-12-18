@@ -7,11 +7,11 @@ import type {
 } from "@/types/post";
 
 const url = process.env.MARBLE_API_URL;
-const key = process.env.MARBLE_WORKSPACE_KEY;
+const key = process.env.MARBLE_API_KEY;
 
 if (!url || !key) {
   throw new Error(
-    "Missing MARBLE_API_URL or MARBLE_WORKSPACE_KEY in environment variables"
+    "Missing MARBLE_API_URL or MARBLE_API_KEY in environment variables"
   );
 }
 
