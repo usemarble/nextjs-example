@@ -17,7 +17,7 @@ Before you begin, ensure you have:
 
 - Node.js 18+ installed
 - A [MarbleCMS](https://marblecms.com) account and workspace
-- Your Marble workspace key (found in your Marble dashboard under Settings > General)
+- Your Marble API key (found in your Marble dashboard under Settings > General)
 
 ## Getting Started
 
@@ -44,11 +44,11 @@ Create a `.env.local` file in the root directory:
 
 ```env
 MARBLE_API_URL=https://api.marblecms.com/v1
-MARBLE_WORKSPACE_KEY=your_workspace_key_here
+MARBLE_API_KEY=your_api_key_here
 MARBLE_WEBHOOK_SECRET=your_webhook_secret_here
 ```
 
-**Important:** Never expose your `MARBLE_WORKSPACE_KEY` in client-side code. These environment variables should only be accessed on the server during the build process.
+**Important:** Never expose your `MARBLE_API_KEY` in client-side code. These environment variables should only be accessed on the server during the build process.
 
 ### 4. Run the development server
 
@@ -89,7 +89,7 @@ src/
 
 ### Key Files Explained
 
-- **`src/lib/marble/queries.ts`** - Contains functions to fetch posts, tags, categories, and authors from the Marble API. Uses Next.js cache tags for revalidation.
+- **`src/lib/marble/queries.ts`** - Contains functions to fetch posts, tags, categories, and authors from the Marble API using the `Authorization` header. Uses Next.js cache tags for revalidation.
 - **`src/lib/marble/webhook.ts`** - Handles webhook signature verification and triggers Next.js cache revalidation when content updates.
 - **`src/app/api/revalidate/route.ts`** - API route endpoint that receives webhooks from Marble and revalidates the cache.
 - **`src/app/(site)/post/[slug]/page.tsx`** - Dynamic route that generates static pages for each post using `generateStaticParams()`.
@@ -98,10 +98,10 @@ src/
 
 ### Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `MARBLE_API_URL` | Marble API base URL | Yes |
-| `MARBLE_WORKSPACE_KEY` | Your Marble workspace key | Yes |
+| Variable                | Description                             | Required           |
+| ----------------------- | --------------------------------------- | ------------------ |
+| `MARBLE_API_URL`        | Marble API base URL                     | Yes                |
+| `MARBLE_API_KEY`        | Your Marble API key                     | Yes                |
 | `MARBLE_WEBHOOK_SECRET` | Secret for verifying webhook signatures | Yes (for webhooks) |
 
 ### Next.js Configuration
