@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Post } from "@/types/post";
+import type { Post } from "@/lib/marble/queries";
 
 interface PostCardProps {
   post: Post;
@@ -19,7 +19,7 @@ function PostCard({ post, showTags = true }: PostCardProps) {
     <li className="flex flex-col gap-4">
       <div className="relative group z-10 rounded-t-md min-h-[240px]">
         <Image
-          src={post.coverImage}
+          src={post.coverImage ?? ""}
           alt={post.title}
           fill
           loading="eager"

@@ -43,7 +43,6 @@ yarn install
 Create a `.env.local` file in the root directory:
 
 ```env
-MARBLE_API_URL=https://api.marblecms.com/v1
 MARBLE_API_KEY=your_api_key_here
 MARBLE_WEBHOOK_SECRET=your_webhook_secret_here
 ```
@@ -79,18 +78,19 @@ src/
 │   └── ui/                  # Shadcn/ui components
 ├── lib/
 │   ├── marble/
-│   │   ├── queries.ts       # API functions to fetch from Marble
+│   │   ├── client.ts        # Marble SDK client initialization
+│   │   ├── queries.ts       # API functions using @usemarble/sdk
 │   │   └── webhook.ts       # Webhook signature verification & handling
 │   └── site.ts              # Site configuration
 └── types/
-    ├── post.ts              # TypeScript types for Marble posts
     └── webhook.ts           # Webhook event types
 ```
 
 ### Key Files Explained
 
-- **`src/lib/marble/queries.ts`** - Contains functions to fetch posts, tags, categories, and authors from the Marble API using the `Authorization` header. Uses Next.js cache tags for revalidation.
+- **`src/lib/marble/queries.ts`** - Contains functions to fetch posts, tags, categories, and authors using the [`@usemarble/sdk`](https://www.npmjs.com/package/@usemarble/sdk) package.
 - **`src/lib/marble/webhook.ts`** - Handles webhook signature verification and triggers Next.js cache revalidation when content updates.
+- **`src/lib/marble/client.ts`** - Marble SDK client initialization
 - **`src/app/api/revalidate/route.ts`** - API route endpoint that receives webhooks from Marble and revalidates the cache.
 - **`src/app/(site)/post/[slug]/page.tsx`** - Dynamic route that generates static pages for each post using `generateStaticParams()`.
 
@@ -100,7 +100,6 @@ src/
 
 | Variable                | Description                             | Required           |
 | ----------------------- | --------------------------------------- | ------------------ |
-| `MARBLE_API_URL`        | Marble API base URL                     | Yes                |
 | `MARBLE_API_KEY`        | Your Marble API key                     | Yes                |
 | `MARBLE_WEBHOOK_SECRET` | Secret for verifying webhook signatures | Yes (for webhooks) |
 

@@ -1,32 +1,11 @@
 import { Fragment } from "react";
 import Container from "@/components/container";
 import PostCard from "@/components/post-card";
-import { getTags } from "@/lib/marble/queries";
-import type { MarblePostList } from "@/types/post";
+import { getPostsByTag, getTags } from "@/lib/marble/queries";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-};
-
-const getPostsTagged = async (slug: string) => {
-  const url = process.env.MARBLE_API_URL;
-  const key = process.env.MARBLE_API_KEY;
-
-  if (!url || !key) {
-    throw new Error(
-      "Missing MARBLE_API_URL or MARBLE_API_KEY in environment variables",
-    );
-  }
-
-  const response = await fetch(`${url}/posts?tags=${slug}`, {
-    headers: {
-      Authorization: `Bearer ${key}`,
-    },
-  });
-  const data: MarblePostList = await response.json();
-
-  return data;
 };
 
 export async function generateStaticParams() {
@@ -40,7 +19,7 @@ export async function generateStaticParams() {
 
 async function Page({ params }: PageProps) {
   const slug = (await params).slug;
-  const data = await getPostsTagged(slug);
+  const data = await getPostsByTag(slug);
 
   if (!data || !data.posts.length) return <div>No posts yet</div>;
 

@@ -33,7 +33,7 @@ export async function generateMetadata({
       site: `${SITE.url}/${slug}`,
       images: [
         {
-          url: data.post.coverImage,
+          url: data.post.coverImage || "",
           width: "1200",
           height: "630",
           alt: data.post.title,
@@ -45,7 +45,7 @@ export async function generateMetadata({
       siteName: "",
       images: [
         {
-          url: data.post.coverImage,
+          url: data.post.coverImage || "",
           width: "1200",
           height: "630",
           alt: data.post.title,
@@ -94,7 +94,7 @@ async function Page({ params }: PageProps) {
           </time>
           <div className="flex items-center gap-2">
             <Image
-              src={data.post.authors[0].image}
+              src={data.post.authors[0].image || ""}
               alt={data.post.authors[0].name}
               width={36}
               height={36}
@@ -106,7 +106,7 @@ async function Page({ params }: PageProps) {
         </div>
         <div className="relative min-h-[360px] md:min-h-[400px] lg:min-h-[430px]">
           <Image
-            src={data.post.coverImage}
+            src={data.post.coverImage || ""}
             alt={data.post.title}
             loading="eager"
             fill

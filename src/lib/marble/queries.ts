@@ -1,105 +1,49 @@
 import type {
-  MarbleAuthorList,
-  MarbleCategoryList,
-  MarblePost,
-  MarblePostList,
-  MarbleTagList,
-} from "@/types/post";
+  Post,
+  PostResponse,
+  PostsListResponse,
+  TagsListResponse,
+} from "@usemarble/sdk/models";
+import { marble } from "@/lib/marble/client";
 
-const url = process.env.MARBLE_API_URL;
-const key = process.env.MARBLE_API_KEY;
-
-if (!url || !key) {
-  throw new Error(
-    "Missing MARBLE_API_URL or MARBLE_API_KEY in environment variables"
-  );
+export async function getPosts(): Promise<PostsListResponse | undefined> {
+  try {
+    const data = await marble.posts.list();
+    return data.result;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-export async function getPosts() {
+export async function getTags(): Promise<TagsListResponse | undefined> {
   try {
-    const raw = await fetch(`${url}/posts`, {
-      headers: {
-        Authorization: `Bearer ${key}`,
-      },
-      next: {
-        tags: ["posts"],
-      },
-    });
-    const data: MarblePostList = await raw.json();
+    const data = await marble.tags.list();
+    return data.result;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getSinglePost(
+  slug: string,
+): Promise<PostResponse | undefined> {
+  try {
+    const data = await marble.posts.get({ identifier: slug });
     return data;
   } catch (error) {
     console.log(error);
   }
 }
 
-export async function getTags() {
+export async function getPostsByTag(
+  tag: string,
+): Promise<PostsListResponse | undefined> {
   try {
-    const raw = await fetch(`${url}/tags`, {
-      headers: {
-        Authorization: `Bearer ${key}`,
-      },
-      cache: "force-cache",
-      next: {
-        tags: ["tags"],
-      },
-    });
-    const data: MarbleTagList = await raw.json();
-    return data;
+    const data = await marble.posts.list({ tags: tag });
+    return data.result;
   } catch (error) {
     console.log(error);
   }
 }
 
-export async function getSinglePost(slug: string) {
-  try {
-    const raw = await fetch(`${url}/posts/${slug}`, {
-      headers: {
-        Authorization: `Bearer ${key}`,
-      },
-      cache: "force-cache",
-      next: {
-        tags: ["posts", slug],
-      },
-    });
-    const data: MarblePost = await raw.json();
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function getCategories() {
-  try {
-    const raw = await fetch(`${url}/categories`, {
-      headers: {
-        Authorization: `Bearer ${key}`,
-      },
-      cache: "force-cache",
-      next: {
-        tags: ["categories"],
-      },
-    });
-    const data: MarbleCategoryList = await raw.json();
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function getAuthors() {
-  try {
-    const raw = await fetch(`${url}/authors`, {
-      headers: {
-        Authorization: `Bearer ${key}`,
-      },
-      cache: "force-cache",
-      next: {
-        tags: ["authors"],
-      },
-    });
-    const data: MarbleAuthorList = await raw.json();
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-}
+export type { Post };
