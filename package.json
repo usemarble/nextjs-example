@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.2",
-    "@usemarble/sdk": "^1.0.5",
+    "@usemarble/sdk": "^1.0.6",
     "@vercel/analytics": "^1.5.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
