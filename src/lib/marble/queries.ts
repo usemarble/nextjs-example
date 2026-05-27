@@ -39,7 +39,7 @@ export async function getPostsByTag(
   tag: string,
 ): Promise<PostsListResponse | undefined> {
   try {
-    const data = await marble.posts.list({ tags: tag });
+    const data = await marble.posts.list({ tags: [tag] });
     return data.result;
   } catch (error) {
     console.log(error);

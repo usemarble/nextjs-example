@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { handleWebhookEvent, verifySignature } from "@/lib/marble/webhook";
-import type { PostEventData } from "@/types/webhook";
+import { isMarbleWebhookPayload } from "@/types/webhook";
 
 export async function POST(request: Request) {
   const signature = request.headers.get("x-marble-signature");
@@ -19,8 +19,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
-  const payload = JSON.parse(bodyText) as PostEventData;
-  if (!payload.event || !payload.data) {
+  let payload: unknown;
+
+  try {
+    payload = JSON.parse(bodyText);
+  } catch {
+    return NextResponse.json(
+      { error: "Invalid JSON payload" },
+      { status: 400 },
+    );
+  }
+
+  if (!isMarbleWebhookPayload(payload)) {
     return Response.json(
       { error: "Invalid payload structure" },
       { status: 400 },

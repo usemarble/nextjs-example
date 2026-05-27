@@ -1,5 +1,6 @@
-// lib/marble/webhook.ts
 import { createHmac, timingSafeEqual } from "node:crypto";
+import { revalidatePath, revalidateTag } from "next/cache";
+import type { MarbleWebhookPayload } from "@/types/webhook";
 
 export function verifySignature(
   secret: string,
@@ -23,35 +24,57 @@ export function verifySignature(
   return timingSafeEqual(expected, computed);
 }
 
-import { revalidatePath, revalidateTag } from "next/cache";
-import type { PostEventData } from "@/types/webhook";
-
-export async function handleWebhookEvent(payload: PostEventData) {
-  const event = payload.event;
+export async function handleWebhookEvent(payload: MarbleWebhookPayload) {
   const data = payload.data;
+  const resourceType = payload.resource.type;
 
-  // Handle any post.* events (published, updated, deleted, etc.)
-  if (event.startsWith("post")) {
-    // Revalidate the homepage and the single post page (if slug exists)
+  if (resourceType === "post") {
     revalidatePath("/");
+    revalidatePath("/post/[slug]", "page");
+    revalidatePath("/tag/[slug]", "page");
+    revalidateTag("posts", "max");
+
     if (data.slug) {
       revalidatePath(`/post/${data.slug}`);
     }
 
-    // If your data fetches use tags, revalidate that tag as well:
-    // e.g. fetch(..., { next: { tags: ["posts"] } })
-    revalidateTag("posts", { expire: 0 });
-
-    return {
-      revalidated: true,
-      now: Date.now(),
-      message: "Post event handled",
-    };
+    return buildResult(true, "Post event handled");
   }
 
+  if (resourceType === "tag") {
+    revalidatePath("/");
+    revalidatePath("/tag/[slug]", "page");
+    revalidateTag("posts", "max");
+
+    if (data.slug) {
+      revalidatePath(`/tag/${data.slug}`);
+    }
+
+    return buildResult(true, "Tag event handled");
+  }
+
+  if (resourceType === "category") {
+    revalidatePath("/");
+    revalidatePath("/post/[slug]", "page");
+    revalidateTag("posts", "max");
+
+    return buildResult(true, "Category event handled");
+  }
+
+  if (resourceType === "media") {
+    revalidatePath("/", "layout");
+    revalidateTag("posts", "max");
+
+    return buildResult(true, "Media event handled");
+  }
+
+  return buildResult(false, "Event ignored");
+}
+
+function buildResult(revalidated: boolean, message: string) {
   return {
-    revalidated: false,
+    revalidated,
     now: Date.now(),
-    message: "Event ignored",
+    message,
   };
 }

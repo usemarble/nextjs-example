@@ -89,7 +89,7 @@ src/
 ### Key Files Explained
 
 - **`src/lib/marble/queries.ts`** - Contains functions to fetch posts, tags, categories, and authors using the [`@usemarble/sdk`](https://www.npmjs.com/package/@usemarble/sdk) package.
-- **`src/lib/marble/webhook.ts`** - Handles webhook signature verification and triggers Next.js cache revalidation when content updates.
+- **`src/lib/marble/webhook.ts`** - Verifies Marble webhook signatures from the `x-marble-signature` header and triggers Next.js cache revalidation for content, taxonomy, and media events.
 - **`src/lib/marble/client.ts`** - Marble SDK client initialization
 - **`src/app/api/revalidate/route.ts`** - API route endpoint that receives webhooks from Marble and revalidates the cache.
 - **`src/app/(site)/post/[slug]/page.tsx`** - Dynamic route that generates static pages for each post using `generateStaticParams()`.
@@ -124,14 +124,22 @@ To enable automatic cache revalidation when content updates:
 
 1. Go to your Marble dashboard → Webhooks
 2. Create a new webhook with your deployment URL: `https://yourdomain.com/api/revalidate`
-3. Select events: `post.published`, `post.updated`, `post.deleted`
-4. Copy the webhook secret and add it to your `.env.local` as `MARBLE_WEBHOOK_SECRET`
+3. Keep the payload format set to JSON
+4. Select the events your site should respond to:
+   - Posts: `post.published`, `post.updated`, `post.deleted`
+   - Tags: `tag.created`, `tag.updated`, `tag.deleted`
+   - Categories: `category.created`, `category.updated`, `category.deleted`
+   - Media: `media.deleted`
+5. Copy the webhook secret from Marble and add it to your `.env.local` as `MARBLE_WEBHOOK_SECRET`
 
 The webhook handler will automatically revalidate:
 
 - The homepage (`/`)
 - Individual post pages (`/post/[slug]`)
-- The `posts` cache tag
+- Tag archive pages (`/tag/[slug]`)
+- The `posts` cache tag using Next.js 16's `revalidateTag("posts", "max")`
+
+Marble sends webhook requests as `POST` payloads with an event envelope: `{ "id": "evt_...", "type": "post.published", "createdAt": "...", "workspaceId": "org_...", "resource": { "type": "post", "id": "post_..." }, "actor": { ... }, "data": { ... } }`. The route verifies the raw request body with `MARBLE_WEBHOOK_SECRET` before parsing the JSON payload.
 
 ## Deployment
 
