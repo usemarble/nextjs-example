@@ -17,7 +17,7 @@ Before you begin, ensure you have:
 
 - Node.js 18+ installed
 - A [MarbleCMS](https://marblecms.com) account and workspace
-- Your Marble API key (found in your Marble dashboard under Settings > General)
+- Your Marble API key (found in your Marble dashboard under Settings > API Keys)
 
 ## Getting Started
 
