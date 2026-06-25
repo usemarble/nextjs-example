@@ -10,7 +10,7 @@ type PageProps = {
 
 export async function generateStaticParams() {
   const data = await getTags();
-  if (!data || !data.tags.length) return [];
+  if (!data?.tags.length) return [];
 
   return data.tags.map((tag) => ({
     slug: tag.slug,
@@ -21,7 +21,7 @@ async function Page({ params }: PageProps) {
   const slug = (await params).slug;
   const data = await getPostsByTag(slug);
 
-  if (!data || !data.posts.length) return <div>No posts yet</div>;
+  if (!data?.posts.length) return <div>No posts yet</div>;
 
   return (
     <section>

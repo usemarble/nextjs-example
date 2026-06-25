@@ -5,7 +5,7 @@ import { getPosts } from "@/lib/marble/queries";
 
 export default async function HomePage() {
   const data = await getPosts();
-  if (!data || !data.posts) return <div>No posts yet</div>;
+  if (!data?.posts) return <div>No posts yet</div>;
 
   return (
     <section>

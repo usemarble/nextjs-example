@@ -20,7 +20,7 @@ export async function generateMetadata({
   // fetch data
   const data = await getSinglePost(slug);
 
-  if (!data || !data.post) return {};
+  if (!data?.post) return {};
 
   return {
     metadataBase: new URL(SITE.url),
@@ -61,7 +61,7 @@ export async function generateMetadata({
 
 export async function generateStaticParams() {
   const data = await getPosts();
-  if (!data || !data.posts.length) return [];
+  if (!data?.posts.length) return [];
 
   return data.posts.map((post) => ({
     slug: post.slug,
@@ -71,7 +71,7 @@ export async function generateStaticParams() {
 async function Page({ params }: PageProps) {
   const slug = (await params).slug;
   const data = await getSinglePost(slug);
-  if (!data || !data.post) return notFound();
+  if (!data?.post) return notFound();
 
   const formattedDate = new Date(data.post.publishedAt).toLocaleDateString(
     "en-US",
